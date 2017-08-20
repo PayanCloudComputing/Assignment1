@@ -1,0 +1,8 @@
+Path: ~/.aws/config
+[default]
+region=us-east-1
+output=json
+
+[profile someuser]
+region=us-west-1
+output=json
