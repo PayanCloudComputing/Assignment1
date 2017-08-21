@@ -18,4 +18,5 @@ sudo npm install grunt-cli -g
 echo "Installation completed."
 echo "Creating Angular project..."
 yo angular $APP
-grunt serve --force
+echo "Setup completed."
+echo "Psst! Run grunt serve --force"
