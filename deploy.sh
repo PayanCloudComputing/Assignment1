@@ -5,7 +5,7 @@ PROFILE=$2
 
 if [ -z "$PROFILE" ]
 then
-    $PROFILE=default
+    PROFILE=default
 fi
 
 l_bucket=$(echo "$BUCKET" | awk '{print tolower($0)}') #Changing bucket name to lower case
@@ -15,17 +15,17 @@ cd CloudComputing
 npm install
 echo "Deploying project..."
 grunt build --force
-echo "Creating bucket..."
+echo "Checking bucket..."
 if aws s3 ls "s3://$S3_BUCKET" --profile $PROFILE 2>&1 | grep -q 'NoSuchBucket'
 then
-    echo "A new bucket will be created..."
+    echo "No such bucket. A new bucket will be created..."
     aws s3api create-bucket --bucket $l_bucket --profile $PROFILE
 else
     echo "Bucket already exists."
     echo "Deleting bucket's content..."
     aws s3 rm s3://$l_bucket --recursive --profile $PROFILE
 fi
-echo "Updating files to bucket..."
+echo "Uploading files to bucket..."
 cd dist
 aws s3 sync . s3://$l_bucket --acl public-read --profile $PROFILE
 aws s3 website s3://$l_bucket/ --index-document index.html --error-document 404.html --profile $PROFILE
